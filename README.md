@@ -22,3 +22,4 @@ dotnet run --project .\src\AGLChallenge.Blazor\AGLChallenge.Blazor.csproj
 This will run locally on port 5147.
 Open a browser and go to http://localhost:5174
 
+Alternatively, just open the solution in Visual Studio and press F5!
