@@ -1,0 +1,65 @@
+﻿@page "/"
+@using AGLChallenge.Services.Clients;
+@using AGLChallenge.Services.Models;
+@using AGLChallenge.Services.Services;
+
+<PageTitle>Cats</PageTitle>
+
+@if(_exception == null)
+{
+	<h1>Male</h1>
+	@if (_males != null)
+	{
+			<ul>
+			@foreach (var male in _males)
+			{
+				<li>@male.Name</li>
+			}
+			</ul>
+	}
+
+	<h1>Female</h1>
+	@if (_females != null)
+	{
+			<ul>
+			@foreach (var female in _females)
+			{
+				<li>@female.Name</li>
+			}
+			</ul>
+	}
+}
+else{
+	<h1>Error has occured</h1>
+	@_exception?.Message
+}
+
+
+@code {
+	[Inject]
+	private IPeopleService _peopleService { get; set; }
+
+	[Inject]
+	private IPeopleFilter<CatFilterResult> _catFilter { get; set; }
+
+	private List<CatFilterResult>? _females;
+	private List<CatFilterResult>? _males;
+	private Exception _exception = null;
+
+	protected override async Task OnInitializedAsync()
+	{
+		try
+		{
+			var people = (await _peopleService.GetPeople())?.ToList();
+			var cats = _catFilter.Filter(people);
+
+			var x = cats.GroupBy(x => x.Gender).ToList();
+			_males = x.Where(z => z.Key == "Male").SelectMany(g => g).OrderBy(o => o.Name).ToList();
+			_females = x.Where(z => z.Key == "Female").SelectMany(g => g).OrderBy(o => o.Name).ToList();
+		}
+		catch(Exception ex)
+		{
+			_exception = ex;
+		}
+	}
+}
