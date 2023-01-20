@@ -40,7 +40,7 @@ else{
 	private IPeopleService _peopleService { get; set; }
 
 	[Inject]
-	private IPeopleFilter<CatFilterResult> _catFilter { get; set; }
+	private IPeopleFilter<CatFilterResult> _filter { get; set; }
 
 	private List<CatFilterResult>? _females;
 	private List<CatFilterResult>? _males;
@@ -51,11 +51,11 @@ else{
 		try
 		{
 			var people = (await _peopleService.GetPeople())?.ToList();
-			var cats = _catFilter.Filter(people);
+			var cats = _filter.Filter(people);
 
-			var x = cats.GroupBy(x => x.Gender).ToList();
-			_males = x.Where(z => z.Key == "Male").SelectMany(g => g).OrderBy(o => o.Name).ToList();
-			_females = x.Where(z => z.Key == "Female").SelectMany(g => g).OrderBy(o => o.Name).ToList();
+			var filteredResults = cats?.GroupBy(x => x.Gender).ToList();
+			_males = filteredResults?.Where(z => z.Key == "Male")?.SelectMany(g => g).OrderBy(o => o.Name).ToList();
+			_females = filteredResults?.Where(z => z.Key == "Female")?.SelectMany(g => g).OrderBy(o => o.Name).ToList();
 		}
 		catch(Exception ex)
 		{
