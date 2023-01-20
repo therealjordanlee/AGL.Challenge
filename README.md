@@ -1,5 +1,7 @@
 # AGL Challenge
 
+[![AGLChallenge Build & Test](https://github.com/therealjordanlee/AGL.Challenge/actions/workflows/build.yaml/badge.svg)](https://github.com/therealjordanlee/AGL.Challenge/actions/workflows/build.yaml)
+
 My solution to the AGL coding challenge.
 The solution follows a simple structure:
 - A service library project, which contains the models, services and clients for interacting with the AGL cat API;
